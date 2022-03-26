@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Scan QR</title>
+</head>
+<body>
+
+<div class="panel-body text-center" >
+<canvas style="width: 100%;"></canvas>
+<hr>
+<select class="form-control browser-default" id="camera-select"></select>
+<b>Scan QR Code</b>
+</div>
+
+<!-- Js Lib -->
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/qrcodelib.js"></script>
+<script type="text/javascript" src="js/webcodecamjquery.js"></script>
+<script type="text/javascript">
+           function wajibAngka(evt) {
+             var charCode = (evt.which) ? evt.which : event.keyCode
+             if (charCode > 31 && (charCode < 48 || charCode > 57))
+             return false;
+           }
+
+          var arg = {
+              resultFunction: function(result) {
+                  //$('.hasilscan').append($('<input name="noijazah" value=' + result.code + ' readonly><input type="submit" value="Cek"/>'));
+                 // $.post("../cek.php", { noijazah: result.code} );
+                  var redirect = 'index.php?p=cek';
+                  $.redirectPost(redirect, {username: result.code});
+              }
+          };
+          
+          var decoder = $("canvas").WebCodeCamJQuery(arg).data().plugin_WebCodeCamJQuery;
+          decoder.buildSelectMenu("select");
+          decoder.play();
+          /*  Without visible select menu
+              decoder.buildSelectMenu(document.createElement('select'), 'environment|back').init(arg).play();
+          */
+          $('select').on('change', function(){
+              decoder.stop().play();
+          });
+
+          // jquery extend function
+          $.extend(
+          {
+              redirectPost: function(location, args)
+              {
+                  var form = '';
+                  $.each( args, function( key, value ) {
+                      form += '<input type="hidden" name="'+key+'" value="'+value+'">';
+                  });
+                  $('<form action="'+location+'" method="POST">'+form+'</form>').appendTo('body').submit();
+              }
+          });
+
+      </script>
+
+</body>
+</html>
