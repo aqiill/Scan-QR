@@ -27,9 +27,7 @@
 
           var arg = {
               resultFunction: function(result) {
-                  //$('.hasilscan').append($('<input name="noijazah" value=' + result.code + ' readonly><input type="submit" value="Cek"/>'));
-                 // $.post("../cek.php", { noijazah: result.code} );
-                  var redirect = 'https://cafe.kojolah.com/transaksi/cek';
+                  var redirect = 'cek.html';
                   $.redirectPost(redirect, {no_pesanan: result.code});
               }
           };
